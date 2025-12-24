@@ -9,7 +9,7 @@ module Bank.Mellat (
     PayResponse (..),
     BankRespCode,
     BankRequest (..),
-    MellatBankConfig (..),
+    BankMellatConfig (..),
 ) where
 
 import           Control.Exception           (Exception)
@@ -60,7 +60,7 @@ xmlName x = XML.Name x Nothing Nothing
 
 bpPayRequest
     :: (MonadIO m, MonadLogger m)
-    => MellatBankConfig -> Transport -> PayRequest -> m (Either ParseError PayResponse)
+    => BankMellatConfig -> Transport -> PayRequest -> m (Either ParseError PayResponse)
 bpPayRequest conf t req = do
     tz <- liftIO getCurrentTimeZone
     let
@@ -88,7 +88,7 @@ bpPayRequest conf t req = do
 
 bpVerifyRequest, bpSettleRequest, bpInquiryRequest, bpReversalRequest
         :: (MonadIO m)
-        => MellatBankConfig -> Transport -> BankRequest -> m BankRespCode
+        => BankMellatConfig -> Transport -> BankRequest -> m BankRespCode
 bpVerifyRequest   = request1 "bpVerifyRequest"
 bpSettleRequest   = request1 "bpSettleRequest"
 bpInquiryRequest  = request1 "bpInquiryRequest"
@@ -96,7 +96,7 @@ bpReversalRequest = request1 "bpReversalRequest"
 
 request1
     :: (MonadIO m)
-    => Text -> MellatBankConfig -> Transport -> BankRequest -> m Int
+    => Text -> BankMellatConfig -> Transport -> BankRequest -> m Int
 request1 name conf t req = liftIO $ invokeWS t "" () body parser
   where
     body = element (xmlNameNS name) $ do
@@ -152,7 +152,7 @@ paymentPage bankRedirectUrl refId mobileNo merchantName = do
 -------------------------------------------------------------------------------
 -- Types
 
-data MellatBankConfig = MellatBankConfig
+data BankMellatConfig = BankMellatConfig
     { terminalId   :: Int
     , userName     :: Text
     , userPassword :: Text
