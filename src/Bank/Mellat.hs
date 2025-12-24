@@ -127,7 +127,18 @@ parseResponse name =
   where
     name' :: Parse.NameMatcher XML.Name = pure $ xmlName name
 
-paymentPage :: Text -> Text -> Text -> Text -> IO Html
+-- | Use it if you are using Haskell as the client
+-- otherwise call equivalent one from the client (JavaScript/curl/...)
+paymentPage
+    :: Text
+    -- ^ bankRedirectUrl
+    -> Text
+    -- ^ refId
+    -> Text
+    -- ^ mobileNo
+    -> Text
+    -- ^ merchantName
+    -> IO Html
 paymentPage bankRedirectUrl refId mobileNo merchantName = do
     manager <- newManager tlsManagerSettings
     initReq <- parseRequest (T.unpack bankRedirectUrl)
@@ -164,7 +175,7 @@ data BankMellatConfig = BankMellatConfig
 -- TODO(w8p7q8): change @orderId from Int to Int64,
 -- currently we use Int because ToXML is not implement for Int64
 data PayRequest = PayRequest
-    { orderId        :: Int     -- should be unique in each request
+    { orderId        :: Int     -- ^ should be unique in each request
     , amount         :: Int
     , createdAt      :: UTCTime
     , additionalData :: Text
