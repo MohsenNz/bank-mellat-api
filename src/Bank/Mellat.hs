@@ -178,7 +178,7 @@ data PayResponse = PayResponse
     } deriving (Show)
 
 -- TODO(w8p7q8): change @saleOrderId from Int to Int64,
-data BankRequest = GenericRequest
+data BankRequest = BankRequest
     { saleOrderId     :: Int
     , saleReferenceId :: Text
     }
