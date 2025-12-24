@@ -11,9 +11,13 @@ nix develop
 ## Example of usage
 
 ```Haskell
+import Network.SOAP.Transport.HTTP qualified as SOAP
+import Control.Monad.Logger (runStdoutLoggingT)
+import Bank.Mellat
+
 deposit :: Int -> Int -> BankMellatConfig -> IO (Text, Text)
 deposit payerId amount bankMellatConfig = do
-    now <- liftIO getCurrentTime
+    now <- getCurrentTime
     let payReq =
             PayRequest
                 { orderId = 2
@@ -36,7 +40,7 @@ deposit payerId amount bankMellatConfig = do
 
 paymentCallback :: Int -> Int -> Text -> BankMellatConfig -> IO Text
 paymentCallback resCode saleOrderId saleReferenceId bankMellatConfig = do
-    t <- liftIO $ SOAP.initTransport_ (T.unpack bankMellatConfig.serviceUrl)
+    t <- SOAP.initTransport_ (T.unpack bankMellatConfig.serviceUrl)
     let
         req = BankRequest {saleOrderId, saleReferenceId}
         conf = bankMellatConfig
