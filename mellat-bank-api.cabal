@@ -1,0 +1,57 @@
+cabal-version:      3.0
+name:               mellat-bank-api
+version:            0.1.0.0
+synopsis:           Haskell client library for the Bank Mellat payment gateway API
+description:        Haskell client library for the Bank Mellat payment gateway API
+homepage:           https://github.com/MohsenNz/mellat-bank-api
+license:            BSD-3-Clause
+license-file:       LICENSE
+author:             Mohsen
+maintainer:         thelight.mn@gmail.com
+category:           Web
+build-type:         Simple
+extra-doc-files:    CHANGELOG.md
+
+common warnings
+    ghc-options: -Wall
+
+library
+    import:             warnings
+    exposed-modules:    Bank.Mellat
+    -- other-modules:
+    -- other-extensions:
+    build-depends:      base                 >=4.18 && <5
+                      , time                ^>=1.12.0
+                      , text                ^>=2.0.0
+                      , bytestring          ^>=0.11.0
+                      , monad-logger        ^>=0.3.0
+                      , exceptions          ^>=0.10.0
+                      , blaze-html          ^>=0.9.0
+                      , xml-conduit-writer  ^>=0.1.0
+                      , xml-conduit         ^>=1.9.0
+                      , soap                ^>=0.2.0
+                      , http-types          ^>=0.12.0
+                      , http-client-tls     ^>=0.3.0
+                      , http-client         ^>=0.7.0
+    hs-source-dirs:     src
+    default-language:   GHC2021
+    default-extensions: OverloadedStrings
+                        DuplicateRecordFields
+                        NoFieldSelectors
+                        OverloadedRecordDot
+                        RecordWildCards
+                        TypeFamilies
+                        DeriveAnyClass
+                        DerivingStrategies
+
+test-suite mellat-bank-api-test
+    import:             warnings
+    default-language:   GHC2021
+    -- other-modules:
+    -- other-extensions:
+    type:               exitcode-stdio-1.0
+    hs-source-dirs:     test
+    main-is:            Main.hs
+    build-depends:
+        base >=4.18 && <5,
+        mellat-bank-api
