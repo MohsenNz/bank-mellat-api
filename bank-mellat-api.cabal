@@ -1,8 +1,9 @@
 cabal-version:      3.0
 name:               bank-mellat-api
 version:            0.1.0.0
-synopsis:           Haskell client library for the Bank Mellat payment gateway API
-description:        Haskell client library for the Bank Mellat payment gateway API
+synopsis:           Haskell client library for the Bank Mellat payment SOAP API
+description:        It is a Haskell client library for consuming Bank Mellat payment SOAP API
+                    to provide payment capability of Bank Mellat to your application.
 homepage:           https://github.com/MohsenNz/bank-mellat-api
 license:            BSD-3-Clause
 license-file:       LICENSE
@@ -11,6 +12,10 @@ maintainer:         thelight.mn@gmail.com
 category:           Web
 build-type:         Simple
 extra-doc-files:    CHANGELOG.md
+
+source-repository head
+  type:     git
+  location: https://github.com/MohsenNz/bank-mellat-api
 
 common warnings
     ghc-options: -Wall

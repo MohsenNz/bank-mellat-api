@@ -1,5 +1,8 @@
 # Bank Mellat API in Haskell
 
+It is a Haskell client library for consuming Bank Mellat payment SOAP API
+to provide payment capability of Bank Mellat to your application.
+
 ## Development
 
 Enter to dev environment:
