@@ -15,14 +15,18 @@ nix develop
 
 The follow is like that:
 
-First you set a hook to `paymentCallback` (defined below) fill the `callbackUrl` field of `BankMellatConfig`, then call `deposit` from Haskell, then call `paymentPage` function in Haskell or an equivalent one like `startPayment` defined in TypeScript below (that redirect you to payment page) if your using TypeScript as the frontend. After that the hook to the `paymentCallback` will be called with `form-url-encoded`. For more information refer to the Bank Mellat API documentation.
+First, set up a hook to paymentCallback (defined below) and set the callbackUrl field in BankMellatConfig to point to it. Then, call deposit from Haskell. After that, call the paymentPage function in Haskell, or an equivalent function such as startPayment in TypeScript if you're using TypeScript for the frontend. This will redirect the user to the payment page. Once the payment process is complete, the paymentCallback hook will be invoked with a application/x-www-form-urlencoded payload. For more information, refer to the Bank Mellat API documentation.
 
 ```haskell
 import Network.SOAP.Transport.HTTP qualified as SOAP
 import Control.Monad.Logger (runStdoutLoggingT)
 import Bank.Mellat
 
-deposit :: Int -> Int -> BankMellatConfig -> IO (Text, Text, Text)
+SaleRefID   = Text
+RedirectUrl = Text
+MobileNo    = Text
+
+deposit :: Int -> Int -> BankMellatConfig -> IO (SaleRefID, RedirectUrl, MobileNo)
 deposit payerId amount bankMellatConfig = do
     now <- getCurrentTime
     let mobileNo = "989913455321"
@@ -46,7 +50,7 @@ deposit payerId amount bankMellatConfig = do
         then pure (saleReferenceId, bankMellatConfig.redirectUrl, mobileNo)
         else error ("PayRequestFailed:" <> read resCode)
 
-paymentCallback :: Int -> Int -> Text -> BankMellatConfig -> IO Text
+paymentCallback :: Int -> Int -> Text -> BankMellatConfig -> IO SaleRefID
 paymentCallback resCode saleOrderId saleReferenceId bankMellatConfig = do
     t <- SOAP.initTransport_ (T.unpack bankMellatConfig.serviceUrl)
     let
